@@ -34,6 +34,16 @@ abstract class LMDBMap<K, V>(path: Path) : MutableMap<K, V>, Closeable {
          * @return a File object representing this path
          */
         private fun Path.toFileOrCreate(): File = this.toFile().also { if (!it.exists()) it.mkdir() }
+
+        /**
+         * Transform a ByteBuffer into a ByteArray.
+         *
+         * @return a byte array
+         */
+        private fun ByteBuffer.asByteArray(): ByteArray {
+            this.rewind()
+            return ByteArray(this.remaining()).also { this.get(it) }
+        }
     }
 
     /**
@@ -266,13 +276,5 @@ abstract class LMDBMap<K, V>(path: Path) : MutableMap<K, V>, Closeable {
     override fun close() {
         this.db.close()
         this.env.close()
-    }
-
-    /**
-     * @return a byte array
-     */
-    private fun ByteBuffer.asByteArray(): ByteArray {
-        this.rewind()
-        return ByteArray(this.remaining()).also { this.get(it) }
     }
 }
