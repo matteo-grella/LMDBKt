@@ -232,11 +232,13 @@ abstract class LMDBMap<K, V>(path: Path) : MutableMap<K, V>, Closeable {
     override fun put(key: K, value: V): V? {
 
         val prev: V? = this[key]
+
+        val valueSer = serializeValue(value)
+        val valueBuf = allocateDirect(valueSer.size)
         val keyBuf = allocateDirect(this.env.maxKeySize)
-        val valueBuf = allocateDirect(700)
 
         keyBuf.put(serializeKey(key)).flip()
-        valueBuf.put(serializeValue(value)).flip()
+        valueBuf.put(valueSer).flip()
 
         this.db.put(keyBuf, valueBuf)
 
