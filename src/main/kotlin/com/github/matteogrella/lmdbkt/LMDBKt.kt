@@ -50,7 +50,7 @@ abstract class LMDBMap<K, V>(path: Path) : MutableMap<K, V>, Closeable {
      * The environment for a single db.
      */
     private val env: Env<ByteBuffer> = create()
-      .setMapSize(10485760)
+      .setMapSize(1099511627776)
       .setMaxDbs(1)
       .open(path.toFileOrCreate())
 
