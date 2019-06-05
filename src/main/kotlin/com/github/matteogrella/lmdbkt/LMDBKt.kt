@@ -15,13 +15,15 @@ import java.nio.ByteBuffer.allocateDirect
 import org.lmdbjava.KeyRange
 import org.lmdbjava.Env.create
 import org.lmdbjava.DbiFlags.MDB_CREATE
+import org.lmdbjava.EnvFlags.MDB_NOLOCK
+import org.lmdbjava.EnvFlags.MDB_RDONLY_ENV
 import java.io.File
 import java.nio.file.Path
 
 /**
  * @param path the path to the database directory
  */
-abstract class LMDBMap<K, V>(path: Path) : MutableMap<K, V>, Closeable {
+abstract class LMDBMap<K, V>(path: Path, readOnly: Boolean = false) : MutableMap<K, V>, Closeable {
 
     companion object {
 
@@ -46,13 +48,15 @@ abstract class LMDBMap<K, V>(path: Path) : MutableMap<K, V>, Closeable {
         }
     }
 
+    private val readOnlyFlags = if (readOnly) listOf(MDB_NOLOCK, MDB_RDONLY_ENV) else listOf()
+
     /**
      * The environment for a single db.
      */
     private val env: Env<ByteBuffer> = create()
       .setMapSize(1099511627776)
       .setMaxDbs(1)
-      .open(path.toFileOrCreate())
+      .open(path.toFileOrCreate(), *readOnlyFlags.toTypedArray())
 
     /**
      * The database.
