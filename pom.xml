@@ -6,7 +6,7 @@
 
     <groupId>com.github.matteogrella</groupId>
     <artifactId>lmdbkt</artifactId>
-    <version>0.1.3</version>
+    <version>0.1.4</version>
     <packaging>jar</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
@@ -49,11 +49,11 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <kotlin.version>1.3.10</kotlin.version>
+        <kotlin.version>1.3.31</kotlin.version>
         <testng.version>6.8.21</testng.version>
         <assertj.version>1.7.1</assertj.version>
         <lmdbjava.version>0.6.3</lmdbjava.version>
-        <utils.version>2.1.1</utils.version>
+        <utils.version>2.1.2</utils.version>
     </properties>
 
     <repositories>
